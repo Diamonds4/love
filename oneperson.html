@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ Niệm 1 Năm ❤️</title>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --bg: #ffccd5;
+            --envelope: #f08080;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--bg);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            touch-action: manipulation; 
+        }
+
+        .container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        
+        .envelope-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--envelope);
+            z-index: 10;
+        }
+
+        .envelope-wrapper::before {
+            content: "";
+            position: absolute;
+            z-index: 15;
+            border-top: 110px solid #f4978e;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            top: 0;
+            transform-origin: top;
+            transition: all 0.5s ease;
+        }
+
+        .envelope-wrapper::after {
+            content: "";
+            position: absolute;
+            z-index: 14;
+            width: 0; height: 0;
+            border-left: 150px solid #ffb5a7;
+            border-right: 150px solid #ffb5a7;
+            border-bottom: 100px solid #ffb5a7;
+            bottom: 0;
+        }
+
+        
+        .content-box {
+            position: absolute;
+            bottom: 5px;
+            left: 5%;
+            width: 90%;
+            height: 180px;
+            background: white;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden; /* Chống tràn tuyệt đối */
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        /* Ảnh của bạn */
+        #myPhoto {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        
+        #myLetter {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        #myLetter h2 { color: var(--primary); font-size: 1.1rem; margin-top: 5px; }
+        #myLetter p { font-size: 0.85rem; line-height: 1.5; color: #333; white-space: pre-line; margin-bottom: 10px; }
+        
+        .open-flap .envelope-wrapper::before { transform: rotateX(180deg); z-index: 0; }
+        .show-content .content-box {
+            bottom: 120px;
+            height: 300px; 
+            z-index: 20;
+        }
+
+        
+        .heart-seal {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 45px; height: 45px;
+            background: var(--primary);
+            z-index: 16;
+            transform: translate(-50%, -20%) rotate(45deg);
+            transition: 0.5s;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .heart-seal:before, .heart-seal:after {
+            content: ""; position: absolute; width: 45px; height: 45px;
+            background: var(--primary); border-radius: 50%;
+        }
+        .heart-seal:before { top: -22px; left: 0; }
+        .heart-seal:after { left: -22px; top: 0; }
+        .open-flap .heart-seal { opacity: 0; transform: translate(-50%, -200%) rotate(45deg) scale(0); }
+
+        .instruction {
+            position: absolute;
+            bottom: -70px; width: 100%; text-align: center;
+            color: #d63384; font-weight: bold; font-size: 1rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; }
+        }
+
+        /* Hiệu ứng trái tim bay */
+        .flying-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            animation: moveUp 4s linear forwards;
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer" onclick="handleStep()">
+        <div class="envelope-wrapper">
+            <div class="content-box" id="contentBox">
+                <img id="myPhoto" src="https://github.com/Diamonds4/........../blob/main/MinhMinh.jpg?raw=true" alt="Kỷ niệm">
+                
+                <div id="myLetter">
+                    <h2>HAPPY 1 YEAR ANNIVERSARY❤️</h2>
+                    <p id="msgText">
+                        THAY GETfffffff
+                        This day last year, I love you deeply,....
+                        and today I love you even more than before.
+
+                    </p>
+                </div>
+            </div>
+            <div class="heart-seal"></div>
+        </div>
+        <div class="instruction" id="hint">Chạm để mở bất ngờ ne!</div>
+    </div>
+
+    <script>
+        let step = 0;
+        let heartInterval;
+
+        function handleStep() {
+            const container = document.getElementById('mainContainer');
+            const photo = document.getElementById('myPhoto');
+            const letter = document.getElementById('myLetter');
+            const hint = document.getElementById('hint');
+
+            if (step === 0) {
+                container.classList.add('open-flap');
+                setTimeout(() => {
+                    container.classList.add('show-content');
+                    photo.style.display = 'block';
+                    hint.innerText = "Chạm tiếp để xem thư...";
+                    startHeartRain(15);
+                }, 500);
+                step = 1;
+            } else if (step === 1) {
+                photo.style.display = 'none';
+                letter.style.display = 'block';
+                hint.innerText = "Love you MiingMinhh! ❤️";
+                startHeartRain(50); 
+                step = 2;
+            } else {
+                location.reload(); 
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('flying-heart');
+            const symbols = ['❤️','💖','💝','💗','💓','🌸'];
+            heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 30 + 15) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        function startHeartRain(count) {
+            for(let i=0; i<count; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+            if(!heartInterval) {
+                heartInterval = setInterval(createHeart, 300);
+            }
+        }
+    </script>
+</body>
+</html>
